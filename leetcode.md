@@ -1,10 +1,10 @@
-《LeetCode刷题记录》
+# 《LeetCode刷题笔记》
 
-------
+
 
 ## 1.两数之和
 
-* 题目描述
+### 题目描述：
 
 > 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
 >
@@ -14,65 +14,203 @@
 
 
 
-* 解题
+### 解题思路：
 
-  使用查找表来解决该问题。
+使用查找表来解决该问题。
 
-  设置一个 map 容器 record 用来记录元素的值与索引，然后遍历数组 nums。
+设置一个 map 容器 record 用来记录元素的值与索引，然后遍历数组 nums。
 
-  * 每次遍历时使用临时变量 complement 用来保存目标值与当前值的差值。
-  * 在此次遍历中查找 record，查看是否有与 complement 一致的值，如果查找成功则返回查找值的索引值与当前变量的值 i。
-  * 如果未找到，则在 record 保存该元素与索引值 i
+* 每次遍历时使用临时变量 complement 用来保存目标值与当前值的差值。
+* 在此次遍历中查找 record，查看是否有与 complement 一致的值，如果查找成功则返回查找值的索引值与当前变量的值 i。
+* 如果未找到，则在 record 保存该元素与索引值 i
 
-  链接：https://leetcode-cn.com/problems/two-sum/solution/dong-hua-tu-jie-suan-fa-liang-shu-zhi-he-fu-shi-pi/
+链接：https://leetcode-cn.com/problems/two-sum/solution/dong-hua-tu-jie-suan-fa-liang-shu-zhi-he-fu-shi-pi/
 
-* 代码实现
 
-  * C++版本
 
-    ```c++
-    #include<iostream>
-    #include<vector>
-    #include<unordered_map>
-    
-    using namespace std;
-    
-    class Solution {
-    public:
-        vector<int> twoSum(vector<int>& nums, int target) {
-            unordered_map<int, int> record;
-            vector<int> res;
-    
-            int remain = 0;
-            for (int i = 0; i < nums.size(); i++) {
-                remain = target - nums[i];
-                if (record.find(remain) != record.end()) {
-                    res.push_back(i);
-                    res.push_back(record[remain]);
-                } else {
-                    record[nums[i]] = i;
-                }
-            }
-            return res;
+### 代码实现：
+
+* C++版本
+
+  ```c++
+  #include<iostream>
+  #include<vector>
+  #include<unordered_map>
+  
+  using namespace std;
+  
+  class Solution {
+  public:
+      vector<int> twoSum(vector<int>& nums, int target) {
+          unordered_map<int, int> record;
+          vector<int> res;
+  
+          int remain = 0;
+          for (int i = 0; i < nums.size(); i++) {
+              remain = target - nums[i];
+              if (record.find(remain) != record.end()) {
+                  res.push_back(i);
+                  res.push_back(record[remain]);
+              } else {
+                  record[nums[i]] = i;
+              }
+          }
+          return res;
+      }
+  };
+  ```
+
+* Java版本
+
+  ```java
+  class Solution {
+  	public int[] twoSum(int[] nums, int target) {
+          Map<Integer, Integer> map = new HashMap<>();
+          for (int i = 0; i < nums.length; i++) {
+              if (map.containsKey(temp)) {
+                  return new int[] {map.get(temp), i};
+              }
+              map.put(nums[i], i);
+          }
+          return new int[] {-1, -1};
+      }
+  }
+  ```
+
+
+
+
+## 2.两数相加
+
+### 题目描述：
+
+> 给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
+>
+> 如果，我们将这两个数相加起来，则会返回一个新的链表来表示它们的和。
+>
+> 您可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+>
+> 示例：
+>
+> 输入：(2 -> 4 -> 3) + (5 -> 6 -> 4)
+> 输出：7 -> 0 -> 8
+> 原因：342 + 465 = 807
+>
+> 来源：力扣（LeetCode）
+> 链接：https://leetcode-cn.com/problems/add-two-numbers
+
+### 解题思路：
+
+* 解法1：将长度较短的链表在末尾补零使得两个链表长度相等，再一个个元素相加，考虑进位
+
+具体步骤：
+
+> 1. 获取两个链表所对应的长度
+> 2. 在较短的链表末尾补零
+> 3. 对齐相加，考虑进位
+
+### 代码实现：
+
+解法1的：
+
+```c
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        int len1=1;//记录l1的长度
+        int len2=1;//记录l2的长度
+        ListNode* p=l1;
+        ListNode* q=l2;
+        while(p->next!=NULL)//获取l1的长度
+        {
+            len1++;
+            p=p->next;
         }
-    };
-    ```
-
-  * Java版本
-
-    ```java
-    class Solution {
-    	public int[] twoSum(int[] nums, int target) {
-            Map<Integer, Integer> map = new HashMap<>();
-            for (int i = 0; i < nums.length; i++) {
-                if (map.containsKey(temp)) {
-                    return new int[] {map.get(temp), i};
-                }
-                map.put(nums[i], i);
-            }
-            return new int[] {-1, -1};
+        while(q->next!=NULL)//获取l2的长度
+        {
+            len2++;
+            q=q->next;
         }
+        if(len1>len2)//l1较长，在l2末尾补零
+        {
+            for(int i=1;i<=len1-len2;i++)
+            {
+                q->next=new ListNode(0);
+                q=q->next;
+            }
+        }
+        else//l2较长，在l1末尾补零
+        {
+            for(int i=1;i<=len2-len1;i++)
+            {
+                p->next=new ListNode(0);
+                p=p->next;
+            }
+        }
+        p=l1;
+        q=l2;
+        bool count=false;//记录进位
+        ListNode* l3=new ListNode(-1);//存放结果的链表
+        ListNode* w=l3;//l3的移动指针
+        int i=0;//记录相加结果
+        while(p!=NULL&&q!=NULL)
+        {
+            i=count+p->val+q->val;
+            w->next=new ListNode(i%10);
+            count=i>=10?true:false;
+            w=w->next;
+            p=p->next;
+            q=q->next;
+        }
+        if(count)//若最后还有进位
+        {
+            w->next=new ListNode(1);
+            w=w->next;
+        }
+        return l3->next; 
     }
-    ```
+};
 
-    
+链接：https://leetcode-cn.com/problems/add-two-numbers/solution/liang-shu-xiang-jia-by-gpe3dbjds1/
+```
+
+- 解法2：不对齐补零，若链表不为空则用sum(代表每个位的和的结果)加上，考虑进位。
+
+```c++
+class Solution2 {
+    public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        ListNode* head = new ListNode(-1); // 存放结果的链表
+        ListNode* h = head; // head的移动指针
+
+        int sum = 0; // 每个对应位和进位的相加和
+        bool carry = false; // 是否有进位
+        while (l1 != nullptr || l2 != nullptr) {
+            sum = 0;
+            if (l1 != nullptr) {
+                sum += l1->val;
+                l1 = l1->next;
+            }
+
+            if (l2 != nullptr) {
+                sum += l2->val;
+                l2 = l2->next;
+            }
+
+            if (carry) {
+                sum++;
+            }
+
+            h->next = new ListNode(sum % 10);
+            h = h->next;
+            carry = sum >= 10 ? true : false;
+        }
+
+        if (carry) {
+            h->next = new ListNode(1);
+        }
+        return head->next;
+    }
+};
+```
+
