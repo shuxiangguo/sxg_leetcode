@@ -4,7 +4,7 @@
 
 ## 1.两数之和
 
-### 题目描述：
+### 题目描述
 
 > 给定一个整数数组 nums 和一个目标值 target，请你在该数组中找出和为目标值的那 两个 整数，并返回他们的数组下标。
 >
@@ -14,7 +14,7 @@
 
 
 
-### 解题思路：
+### 解题思路
 
 使用查找表来解决该问题。
 
@@ -28,7 +28,7 @@
 
 
 
-### 代码实现：
+### 代码实现
 
 * C++版本
 
@@ -77,12 +77,15 @@
   }
   ```
 
+------------
 
+### 知识点
 
+> Map的使用，熟悉使用STL！！！
 
 ## 2.两数相加
 
-### 题目描述：
+### 题目描述
 
 > 给出两个 非空 的链表用来表示两个非负的整数。其中，它们各自的位数是按照 逆序 的方式存储的，并且它们的每个节点只能存储 一位 数字。
 >
@@ -99,7 +102,7 @@
 > 来源：力扣（LeetCode）
 > 链接：https://leetcode-cn.com/problems/add-two-numbers
 
-### 解题思路：
+### 解题思路
 
 * 解法1：将长度较短的链表在末尾补零使得两个链表长度相等，再一个个元素相加，考虑进位
 
@@ -109,7 +112,7 @@
 > 2. 在较短的链表末尾补零
 > 3. 对齐相加，考虑进位
 
-### 代码实现：
+### 代码实现
 
 解法1的：
 
@@ -214,3 +217,116 @@ class Solution2 {
 };
 ```
 
+
+
+### 知识点
+
+> 指针，链表
+
+
+
+## 3. 无重复字符的最长子串
+
+### 题目描述
+
+> 给定一个字符串，请你找出其中不含有重复字符的 **最长子串** 的长度。
+>
+> **示例 1:**
+>
+> ```
+> 输入: "abcabcbb"
+> 输出: 3 
+> 解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+> ```
+
+
+
+### 解题思路
+
+> 通过使用 HashSet 作为滑动窗口，我们可以用 O(1)的时间来完成对字符是否在当前的子字符串中的检查。
+>
+> 滑动窗口是数组/字符串问题中常用的抽象概念。 窗口通常是在数组/字符串中由开始和结束索引定义的一系列元素的集合，即 [i,j)（左闭，右开）。而滑动窗口是可以将两个边界向某一方向“滑动”的窗口。例如，我们将 [i,j)[i, j)[i,j) 向右滑动 1个元素，则它将变为 [i+1,j+1)（左闭，右开）。
+>
+> 回到我们的问题，我们使用 HashSet 将字符存储在当前窗口 [i,j)（最初 j=i）中。 然后我们向右侧滑动索引 jjj，如果它不在 HashSet 中，我们会继续滑动 jjj。直到 s[j] 已经存在于 HashSet 中。此时，我们找到的没有重复字符的最长子字符串将会以索引 i开头。如果我们对所有的 i 这样做，就可以得到答案
+> 链接：https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/wu-zhong-fu-zi-fu-de-zui-chang-zi-chuan-by-leetcod/
+>
+
+### 代码实现
+
+* C++版本
+
+```c++
+# include<iostream>
+#include <string>
+#include <set>
+using namespace std;
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int n = s.size();
+        set<char> myset;
+        int ans = 0, i = 0, j = 0;
+        while (i < n && j < n) {
+            // try to extend the range[i, j]
+            if (!myset.count(s[j])) {
+                myset.insert(s[j++]);
+                ans = max(ans, j-i);
+            } else {
+                myset.erase(s[i++]);
+            }
+        }
+        return ans;
+    }
+};
+```
+
+* Python版本
+
+```python
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # 如果字符串s为空，返回0
+        if not s:return 0
+        # 保存窗口内字符串
+        lookup = list()
+        n = len(s)
+        # 最大子串长度
+        max_len = 0
+        # 当前窗口长度
+        cur_len = 0
+        # 遍历字符串s
+        for i in range(n):
+            val = s[i]
+            # 如果该值不在窗口中
+            if not val in lookup:
+                # 添加到窗口内
+                lookup.append(val)
+                # 当前长度+1
+                cur_len+=1
+            # 如果该值在窗口中已存在
+            else:
+                # 获取其在窗口中的位置
+                index = lookup.index(val)
+                # 移除该位置及之前的字符，相当于上图中的图3到图4
+                lookup = lookup[index+1:]
+                lookup.append(val)
+                # 当前长度更新为窗口长度
+                cur_len = len(lookup)
+            # 如果当前长度大于最大长度，更新最大长度值
+            if cur_len > max_len:max_len = cur_len
+        # 返回最大子串长度
+        return max_len
+```
+
+
+
+### 知识点
+
+>  滑动窗口的使用，具体可查看参考链接
+
+### 参考链接
+
+* https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/wu-zhong-fu-zi-fu-de-zui-chang-zi-chuan-by-leetcod/
+* https://leetcode-cn.com/problems/longest-substring-without-repeating-characters/solution/hua-dong-chuang-kou-by-powcai/
