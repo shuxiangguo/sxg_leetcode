@@ -408,3 +408,74 @@ public:
 ### 参考链接
 
 https://leetcode-cn.com/problems/median-of-two-sorted-arrays/solution/xiang-xi-tong-su-de-si-lu-fen-xi-duo-jie-fa-by-w-2/
+
+
+
+## 5. 最长回文子串
+
+### 题目描述
+
+> 给定一个字符串 s，找到 s 中最长的回文子串。你可以假设 s 的最大长度为 1000。
+>
+> 示例 1：
+>
+> 输入: "babad"
+> 输出: "bab"
+> 注意: "aba" 也是一个有效答案。
+>
+> 示例 2：
+>
+> 输入: "cbbd"
+> 输出: "bb"
+>
+> 链接：https://leetcode-cn.com/problems/longest-palindromic-substring
+
+
+
+### 解题思路
+
+> 将字符串s反转得到字符串 rev，再求他们的最长公共子串，再判断该最长公共子串是否就是我们要找的最长回文子串
+
+### 代码实现
+
+```C++
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        if(s.length()==1) return s;//大小为1的字符串必为回文串
+        string rev=s;//rev存放s反转结果
+        string res;//存放结果
+        std::reverse(rev.begin(),rev.end());
+        if(rev==s) return s;
+        int len=0;//存放回文子串的长度
+        for(int i=0;i<s.length();i++)//查找s与rev的最长公共子串
+        {
+            string temp;//存放待验证子串
+            for(int j=i;j<s.length();j++)
+            {
+                temp=temp+s[j];
+                if(len>=temp.length())
+                    continue;
+                else if(rev.find(temp)!=-1)//在rev中找到temp
+                {
+                    string q=temp;//q用来验证temp是否是回文子串
+                    std::reverse(q.begin(),q.end());
+                    if(q==temp)
+                    {
+                        len=temp.length();
+                        res=temp;
+                    }
+                }
+                else break;
+            }
+            temp="";
+        }
+        return res;
+    }
+};
+
+链接：https://leetcode-cn.com/problems/longest-palindromic-substring/solution/zui-chang-hui-wen-zi-chuan-c-by-gpe3dbjds1/
+```
+
+
+
