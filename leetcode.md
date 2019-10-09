@@ -542,5 +542,84 @@ public:
         return ret;
     }
 };
+参考链接：https://leetcode-cn.com/problems/zigzag-conversion/solution/z-zi-xing-bian-huan-by-leetcode/
+```
+
+
+
+## 7.整数反转
+
+### 题目描述
+
+> 给出一个 32 位的有符号整数，你需要将这个整数中每位上的数字进行反转。
+>
+> 示例 1:
+>
+> 输入: 123
+> 输出: 321
+>
+>  示例 2:
+>
+> 输入: -123
+> 输出: -321
+>
+> 示例 3:
+>
+> 输入: 120
+> 输出: 21
+
+
+
+### 解题思路
+
+> 反转整数的方法可以与反转字符串进行类比。
+>
+> 我们想重复“弹出” x的最后一位数字，并将它“推入”到 rev 的后面。最后，rev\text{rev}rev 将与 xxx 相反。
+>
+> 要在没有辅助堆栈 / 数组的帮助下 “弹出” 和 “推入” 数字，我们可以使用数学方法。
+>
+> //pop operation:
+> pop = x % 10;
+> x /= 10;
+>
+> //push operation:
+> temp = rev * 10 + pop;
+> rev = temp;
+>
+> 但是，这种方法很危险，因为当 temp=rev⋅10+pop 时会导致溢出。
+>
+> 幸运的是，事先检查这个语句是否会导致溢出很容易。
+>
+> 为了便于解释，我们假设 rev是正数。
+>
+> ![1570630904473](/home/sxg/leetcode/7)
+>
+> 当 rev为负时可以应用类似的逻辑。
+> 链接：https://leetcode-cn.com/problems/reverse-integer/solution/zheng-shu-fan-zhuan-by-leetcode/
+
+
+
+### 代码实现
+
+```C++
+#include<iostream>
+#include<climits>
+
+using namespace std;
+
+class Solution {
+public:
+    int reverse(int x) {
+        int rev = 0;
+        while (x != 0) {
+            int pop = x % 10;
+            x /= 10;
+            if (rev > INT_MAX / 10 || rev == INT_MAX / 10 && pop > 7) return 0;
+            if (rev < INT_MIN / 10 || rev == INT_MIN / 10 && pop < -8) return 0;
+            rev = rev * 10 + pop;
+        }
+        return rev;
+    }
+};
 ```
 
