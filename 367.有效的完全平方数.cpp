@@ -37,22 +37,43 @@
 using namespace std;
 class Solution {
 public:
-    bool isPerfectSquare(int num) {
-        int start = 1;
-        int end = num;
-        int mid = start + (end - start) / 2;
+    // 二分法
+    // bool isPerfectSquare(int num) {
+    //     int start = 1;
+    //     int end = num;
+    //     int mid = start + (end - start) / 2;
 
-        while (start <= end) {
-            if (pow(mid, 2) > num ) {
-                end = mid - 1;
-            } else if (pow(mid, 2) < num) {
-                start = mid + 1;
-            } else {
-                return true;
-            }
-            mid = start + (end - start) / 2;
+    //     while (start <= end) {
+    //         if (pow(mid, 2) > num ) {
+    //             end = mid - 1;
+    //         } else if (pow(mid, 2) < num) {
+    //             start = mid + 1;
+    //         } else {
+    //             return true;
+    //         }
+    //         mid = start + (end - start) / 2;
+    //     }
+    //     return false;
+    // }
+
+    // // 递增判断
+    // bool isPerfectSquare(int num) {
+    //     int i = 1;
+    //     while (pow(i, 2) < num) {
+    //         i++;
+    //     }
+    //     if (pow(i, 2) == num) return true;
+    //     else return false;
+    // }
+
+    // 公式法
+    bool isPerfectSquare(int num) {
+        int i = 1;
+        while (num > 0) {
+            num -= i;
+            i += 2;
         }
-        return false;
+        return num == 0;
     }
 };
 // @lc code=end
