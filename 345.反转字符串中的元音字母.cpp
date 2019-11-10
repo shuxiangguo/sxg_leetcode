@@ -36,24 +36,34 @@
 #include<string>
 #include<vector>
 #include<algorithm>
+#include<cctype>
 
 using namespace std;
 class Solution {
 public:
     string reverseVowels(string s) {
         vector<char> vec {'a', 'e', 'i', 'o', 'u'};
-        transform(s.begin(), s.end(), s.begin(), tolower);
         if (s.size() > 0) {
             auto first = s.begin();
             auto last = s.end() - 1;
             while (first < last) {
-                while (find(vec.begin(), vec.end(), *first) == vec.end()) {
+                while (first < last && find(vec.begin(), vec.end(), tolower(*first)) == vec.end()) {
                     first++;
                 }
 
-                while (find())
+                while (first < last && find(vec.begin(), vec.end(), tolower(*last)) == vec.end()) {
+                    last--;
+                }
+                swap(*first, *last);
+                first++;
+                last--;
             }
         }
+        string str = "";
+        for (auto& x : s) {
+            str += x;
+        }
+        return str;
     }
 };
 // @lc code=end
