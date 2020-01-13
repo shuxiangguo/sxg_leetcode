@@ -3803,3 +3803,53 @@ int maximumProduct(vector<int>& nums) {
     }
 ```
 
+
+
+## 643. 子数组最大平均数 I
+
+### 题目描述
+
+> 给定 `n` 个整数，找出平均数最大且长度为 `k` 的连续子数组，并输出该最大平均数。
+>
+> **示例 1:**
+>
+> ```
+> 输入: [1,12,-5,-6,50,3], k = 4
+> 输出: 12.75
+> 解释: 最大平均数 (12-5-6+50)/4 = 51/4 = 12.75
+> ```
+>
+>  
+>
+> **注意:**
+>
+> 1. 1 <= `k` <= `n` <= 30,000。
+> 2. 所给数据范围 [-10,000，10,000]。
+
+
+
+### 解题思路
+
+**滑动窗口解法**
+
+假设我们已经索引从 ii到 i+k 子数组和为xx。要知道索引从 i+1 到 i+k+1 子数组和，只需要从 x 减去 sum[i]，加上 sum[i+k+1] 即可。 根据此方法可以获得长度为 k 的子数组最大平均值。
+
+
+
+### 代码实现
+
+```cpp
+https://leetcode-cn.com/problems/maximum-average-subarray-i/solution/zi-shu-zu-de-zui-da-ping-jun-shu-i-by-leetcode/double findMaxAverage(vector<int>& nums, int k) {
+        double sum = accumulate(nums.begin(), nums.begin()+k, 0);
+        double res = sum;
+        for (int i = k; i < nums.size(); i++) {
+            sum = sum + nums[i] - nums[i-k];
+            res = max(res, sum);
+        }
+        return res / k;
+    }
+```
+
+> 
+>
+> 参考链接：https://leetcode-cn.com/problems/maximum-average-subarray-i/solution/zi-shu-zu-de-zui-da-ping-jun-shu-i-by-leetcode/	
