@@ -3884,6 +3884,10 @@ https://leetcode-cn.com/problems/maximum-average-subarray-i/solution/zi-shu-zu-d
 
 **利用哈希表解决**
 
+
+
+### 代码实现
+
 ```cpp
 class Solution {
 public:
@@ -3907,4 +3911,98 @@ public:
     }
 };
 ```
+
+
+
+## 653. 两数之和
+
+### 题目描述
+
+> 给定一个二叉搜索树和一个目标结果，如果 BST 中存在两个元素且它们的和等于给定的目标结果，则返回 true。
+>
+> **案例 1:**
+>
+> ```
+> 输入: 
+>     5
+>    / \
+>   3   6
+>  / \   \
+> 2   4   7
+> 
+> Target = 9
+> 
+> 输出: True
+> ```
+>
+>  
+>
+> **案例 2:**
+>
+> ```
+> 输入: 
+>     5
+>    / \
+>   3   6
+>  / \   \
+> 2   4   7
+> 
+> Target = 28
+> 
+> 输出: False
+> ```
+
+
+
+### 解题思路
+
+> 最简单的方法就是遍历整棵树，找出所有可能的组合，判断是否存在和为 kk 的一对节点。现在在此基础上做一些改进。
+>
+> 如果存在两个元素之和为 kk，即 x+y=kx+y=k，并且已知 xx 是树上一个节点的值，则只需判断树上是否存在一个值为 yy 的节点，使得 y=k-xy=k−x。基于这种思想，在树的每个节点上遍历它的两棵子树（左子树和右子树），寻找另外一个匹配的数。在遍历过程中，将每个节点的值都放到一个 setset 中。
+>
+> 对于每个值为 pp 的节点，在 setset 中检查是否存在 k-pk−p。如果存在，那么可以在该树上找到两个节点的和为 kk；否则，将 pp 放入到 setset 中。
+>
+> 如果遍历完整棵树都没有找到一对节点和为 kk，那么该树上不存在两个和为 kk 的节点。
+>
+
+
+
+
+
+### 代码实现
+
+```cpp
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+#include<iostream>
+#include<set>
+
+using namespace std;
+
+class Solution {
+public:
+    bool findTarget(TreeNode* root, int k) {
+        set<int> myset;
+        return find(root, k, myset);
+    }
+
+    bool find(TreeNode* root, int k, set<int>& myset) {
+        if (root == nullptr) return false;
+        if (myset.count(k-root->val) != 0) {
+            return true;
+        }
+        myset.insert(root->val);
+        return find(root->left, k, myset) || find(root->right, k, myset);
+    }
+};
+```
+
+
 
